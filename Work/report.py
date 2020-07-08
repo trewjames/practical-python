@@ -5,6 +5,10 @@ import csv
 
 
 def read_portfolio(filename):
+    '''
+    Read a stock portfolio file into a list of dictionaries with keys
+    name, shares, and price.
+    '''
     portfolio = []
     with open(filename, 'rt') as f:
         lines = csv.reader(f)
@@ -23,6 +27,9 @@ def read_portfolio(filename):
 
 
 def read_prices(filename):
+    '''
+    Read a CSV file of price data into a dict mapping names to prices.
+    '''
     prices = {}
     with open(filename, 'rt') as f:
         lines = csv.reader(f)
@@ -35,26 +42,46 @@ def read_prices(filename):
     return prices
 
 
-def make_report(buy, sell):
-    total_cost = 0
-    total_value = 0
+def make_report_data(portfolio, prices):
+    '''
+    Make a list of (name, shares, price, change) tuples given a portfolio list
+    and prices dictionary.
+    '''
+
     report = []
-    for item in buy:
-        total_cost += item['shares'] * item['price']
-        total_value += item['shares'] * sell[item['name']]
-        price_change = round(sell[item['name']] - item['price'], 2)
-        summary = [item['name'], item['shares'], item['price'], price_change]
-        report.append(tuple(summary))
+    for item in portfolio:
+        current_price = prices[item['name']]
+        price_change = round(current_price - item['price'], 2)
+        summary = (item['name'], item['shares'], current_price, price_change)
+        report.append(summary)
+    return report
+
+
+def print_report(reportdata):
+    '''
+    Print a nicely formated table from a list of (name, shares, price, change) tuples.
+    '''
 
     header = ('Name', 'Shares', 'Price', 'Change')
     print('%10s %10s %10s %10s' % header)
     print(('-' * 10 + ' ') * len(header))
-    for line in report:
+    for line in reportdata:
         print("%10s %10d %10.2f %10.2f" % line)
-    return round(total_value - total_cost, 2)
 
 
-portfolio = read_portfolio("Data/portfoliodate.csv")
-prices = read_prices("Data/prices.csv")
+def portfolio_report(portfoliofile, pricefile):
+    '''
+    Make a stock report given portfolio and price data files.
+    '''
+    # Read data files
+    portfolio = read_portfolio(portfoliofile)
+    prices = read_prices(pricefile)
 
-print(make_report(portfolio, prices))
+    # Create the report data
+    report = make_report_data(portfolio, prices)
+
+    # Print it out
+    print_report(report)
+
+
+portfolio_report("Data/portfoliodate.csv", "Data/prices.csv")
