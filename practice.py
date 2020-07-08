@@ -1,10 +1,19 @@
-bill_thickness = 0.11 * 0.001  # Meters (0.11 mm)
-sears_height = 442  # Height (meters)
-num_bills = 1
-days = 1
+from collections import Counter, defaultdict
 
-while (num_bills * bill_thickness) < sears_height:
-    days += 1
-    num_bills *= 2
+portfolio = [
+    ('GOOG', 100, 490.1),
+    ('IBM', 50, 91.1),
+    ('CAT', 150, 83.44),
+    ('IBM', 100, 45.23),
+    ('GOOG', 75, 572.45),
+    ('AA', 50, 23.15)
+]
 
-print(days, end='\r')
+total_shares = Counter()
+holdings = defaultdict(list)
+for name, shares, price in portfolio:
+    total_shares[name] += shares
+    holdings[name].append((shares, price))
+
+print(total_shares)
+print(holdings)
