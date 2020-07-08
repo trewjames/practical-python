@@ -1,19 +1,16 @@
-from collections import Counter, defaultdict
+import csv
 
-portfolio = [
-    ('GOOG', 100, 490.1),
-    ('IBM', 50, 91.1),
-    ('CAT', 150, 83.44),
-    ('IBM', 100, 45.23),
-    ('GOOG', 75, 572.45),
-    ('AA', 50, 23.15)
-]
-
-total_shares = Counter()
-holdings = defaultdict(list)
-for name, shares, price in portfolio:
-    total_shares[name] += shares
-    holdings[name].append((shares, price))
-
-print(total_shares)
-print(holdings)
+with open('Work/Data/dowstocks.csv', 'rt') as f:
+    rows = csv.reader(f)
+    header = next(rows)
+    types = [
+        str, float, tuple, str, float,
+        float, float, float, int
+    ]
+    for row in rows:
+        row[2] = map(int, row[2].split('/'))
+        converted = {
+            name: func(val) for name, func, val
+            in zip(header, types, row)
+        }
+        print(converted)
