@@ -1,16 +1,13 @@
-import csv
+portfolio = [
+    {'name': 'AA', 'shares': 100, 'price': 32.2},
+    {'name': 'IBM', 'shares': 50, 'price': 91.1},
+    {'name': 'CAT', 'shares': 150, 'price': 83.44},
+    {'name': 'MSFT', 'shares': 200, 'price': 51.23},
+    {'name': 'GE', 'shares': 95, 'price': 40.37},
+    {'name': 'MSFT', 'shares': 50, 'price': 65.1},
+    {'name': 'IBM', 'shares': 100, 'price': 70.44}
+]
 
-with open('Work/Data/dowstocks.csv', 'rt') as f:
-    rows = csv.reader(f)
-    header = next(rows)
-    types = [
-        str, float, tuple, str, float,
-        float, float, float, int
-    ]
-    for row in rows:
-        row[2] = map(int, row[2].split('/'))
-        converted = {
-            name: func(val) for name, func, val
-            in zip(header, types, row)
-        }
-        print(converted)
+
+cost = sum([row['shares'] * row['price'] for row in portfolio])
+print(cost)

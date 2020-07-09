@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
 # report.py
 #
 # Exercise 2.4
-import csv
+from fileparse import parse_csv
 
 
 def read_portfolio(filename):
@@ -9,20 +10,23 @@ def read_portfolio(filename):
     Read a stock portfolio file into a list of dictionaries with keys
     name, shares, and price.
     '''
-    portfolio = []
-    with open(filename, 'rt') as f:
-        lines = csv.reader(f)
-        header = next(lines)
+    select = ['name', 'shares', 'price']
+    types = [str, int, float]
 
-        for line in lines:
-            record = dict(zip(header, line))
-            converted_record = {
-                'name': record['name'],
-                'shares': int(record['shares']),
-                'price': float(record['price'])
-            }
-            portfolio.append(converted_record)
+    portfolio = parse_csv(filename, select=select, types=types)
 
+    # with open(filename, 'rt') as f:
+    #     lines = csv.reader(f)
+    #     header = next(lines)
+
+    #     for line in lines:
+    #         record = dict(zip(header, line))
+    #         converted_record = {
+    #             'name': record['name'],
+    #             'shares': int(record['shares']),
+    #             'price': float(record['price'])
+    #         }
+    #         portfolio.append(converted_record)
     return portfolio
 
 
@@ -30,16 +34,20 @@ def read_prices(filename):
     '''
     Read a CSV file of price data into a dict mapping names to prices.
     '''
-    prices = {}
-    with open(filename, 'rt') as f:
-        lines = csv.reader(f)
 
-        for line in lines:
-            try:
-                prices[line[0]] = float(line[1])
-            except IndexError:
-                continue
-    return prices
+    types = [str, float]
+    prices = parse_csv(filename, types=types, has_headers=False)
+
+    # prices = {}
+    # with open(filename, 'rt') as f:
+    #     lines = csv.reader(f)
+
+    #     for line in lines:
+    #         try:
+    #             prices[line[0]] = float(line[1])
+    #         except IndexError:
+    #             continue
+    return dict(prices)
 
 
 def make_report_data(portfolio, prices):
@@ -82,6 +90,15 @@ def portfolio_report(portfoliofile, pricefile):
 
     # Print it out
     print_report(report)
+    print()
 
 
-portfolio_report("Data/portfoliodate.csv", "Data/prices.csv")
+def main(args):
+    if len(args) != 3:
+        raise SystemExit(f'Usage: {args[0]} portfile pricefile')
+    portfolio_report(args[1], args[2])
+
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv)
