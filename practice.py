@@ -1,13 +1,53 @@
-portfolio = [
-    {'name': 'AA', 'shares': 100, 'price': 32.2},
-    {'name': 'IBM', 'shares': 50, 'price': 91.1},
-    {'name': 'CAT', 'shares': 150, 'price': 83.44},
-    {'name': 'MSFT', 'shares': 200, 'price': 51.23},
-    {'name': 'GE', 'shares': 95, 'price': 40.37},
-    {'name': 'MSFT', 'shares': 50, 'price': 65.1},
-    {'name': 'IBM', 'shares': 100, 'price': 70.44}
-]
+class Dog:
+    def noise(self):
+        return 'Bark'
+
+    def chase(self):
+        return 'Chasing!'
 
 
-cost = sum([row['shares'] * row['price'] for row in portfolio])
-print(cost)
+class Bike:
+    def noise(self):
+        return 'On your left'
+
+    def pedal(self):
+        return 'Pedaling!'
+
+
+class Loud:
+    def noise(self):
+        return super().noise().upper()
+        # super() delegates to the next class on the MRO
+
+
+class LoudDog(Loud, Dog):
+    '''
+    MRO:
+    (<class '__main__.LoudDog'>,
+    <class '__main__.Loud'>,
+    <class '__main__.Dog'>,
+    <class 'object'>)
+    '''
+    pass
+
+
+class LoudBike(Loud, Bike):
+    pass
+
+
+misty = Dog()
+chari = Bike()
+yapper = LoudDog()
+print(yapper.noise())
+print(LoudDog.__mro__)
+print(Loud.__dict__)
+
+
+'''
+for cls in LoudDog.__mro__:
+    if 'noise' in cls.__dict__:
+        if super():
+            continue
+        else:
+            break
+'''
