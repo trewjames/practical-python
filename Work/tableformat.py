@@ -48,6 +48,10 @@ class HTMLTableFormatter(TableFormatter):
         print('</tr>')
 
 
+class FormatError(Exception):
+    pass
+
+
 def create_formatter(fmt):
     if fmt == 'txt':
         return TextTableFormatter()
@@ -58,8 +62,9 @@ def create_formatter(fmt):
     else:
         raise FormatError(f'Unknown/Incompatible format {fmt}.')
 
-def print_report(data, columns, formatter):
+def print_table(portfolio, columns, formatter):
 
     formatter.headings(columns)
-    for colname in columns:
-        print(f"{colname:10s} ")
+    for obj in portfolio:
+        rowdata = [str(getattr(obj, name)) for name in columns]
+        formatter.row(rowdata)
