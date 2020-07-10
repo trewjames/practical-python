@@ -10,8 +10,6 @@ def parse_csv(lines, select=None, types=None, has_headers=True,
 
     if select and not has_headers:
         raise RuntimeError('select requires column headers.')
-    if not isinstance(lines, list):
-        raise TypeError('Please pass a list of lines.')
 
     rows = csv.reader(lines, delimiter=delimiter)
 

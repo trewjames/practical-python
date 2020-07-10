@@ -3,6 +3,7 @@
 #
 # Exercise 2.4
 from fileparse import parse_csv
+from stock import Stock
 
 
 def read_portfolio(filename):
@@ -12,22 +13,8 @@ def read_portfolio(filename):
     '''
     select = ['name', 'shares', 'price']
     types = [str, int, float]
-
-    portfolio = parse_csv(filename, select=select, types=types)
-
-    # with open(filename, 'rt') as f:
-    #     lines = csv.reader(f)
-    #     header = next(lines)
-
-    #     for line in lines:
-    #         record = dict(zip(header, line))
-    #         converted_record = {
-    #             'name': record['name'],
-    #             'shares': int(record['shares']),
-    #             'price': float(record['price'])
-    #         }
-    #         portfolio.append(converted_record)
-    return portfolio
+    dictlist = parse_csv(filename, select=select, types=types)
+    return [stock.Stock for stock in dictlist]
 
 
 def read_prices(filename):
@@ -36,18 +23,7 @@ def read_prices(filename):
     '''
 
     types = [str, float]
-    prices = parse_csv(filename, types=types, has_headers=False)
-
-    # prices = {}
-    # with open(filename, 'rt') as f:
-    #     lines = csv.reader(f)
-
-    #     for line in lines:
-    #         try:
-    #             prices[line[0]] = float(line[1])
-    #         except IndexError:
-    #             continue
-    return dict(prices)
+    return parse_csv(filename, types=types, has_headers=False)
 
 
 def make_report_data(portfolio, prices):
