@@ -3,7 +3,8 @@
 #
 # Exercise 2.4
 from fileparse import parse_csv
-from stock import Stock
+import tableformat
+import stock
 
 
 def read_portfolio(filename):
@@ -13,8 +14,9 @@ def read_portfolio(filename):
     '''
     select = ['name', 'shares', 'price']
     types = [str, int, float]
-    dictlist = parse_csv(filename, select=select, types=types)
-    return [stock.Stock for stock in dictlist]
+    with open(filename) as lines:
+        dictlist = parse_csv(lines, select=select, types=types)
+    return [stock.Stock(d['name'], d['shares'], d['price']) for d in dictlist]
 
 
 def read_prices(filename):
@@ -23,7 +25,9 @@ def read_prices(filename):
     '''
 
     types = [str, float]
-    return parse_csv(filename, types=types, has_headers=False)
+    with open(filename) as lines:
+        dictlist = dict(parse_csv(lines, types=types, has_headers=False))
+    return dictlist
 
 
 def make_report_data(portfolio, prices):
@@ -34,26 +38,26 @@ def make_report_data(portfolio, prices):
 
     report = []
     for item in portfolio:
-        current_price = prices[item['name']]
-        price_change = round(current_price - item['price'], 2)
-        summary = (item['name'], item['shares'], current_price, price_change)
+        current_price = prices[item.name]
+        price_change = round(current_price - item.price, 2)
+        summary = (item.name, item.shares, current_price, price_change)
         report.append(summary)
     return report
 
 
-def print_report(reportdata):
+def print_report(reportdata, formatter):
     '''
     Print a nicely formated table from a list of (name, shares, price, change) tuples.
     '''
 
-    header = ('Name', 'Shares', 'Price', 'Change')
-    print('%10s %10s %10s %10s' % header)
-    print(('-' * 10 + ' ') * len(header))
-    for line in reportdata:
-        print("%10s %10d %10.2f %10.2f" % line)
+    formatter.headings(['Name', 'Shares', 'Price', 'Change'])
+
+    for name, shares, price, change in reportdata:
+        rowdata = [name, shares, price, change]
+        formatter.row(rowdata)
 
 
-def portfolio_report(portfoliofile, pricefile):
+def portfolio_report(portfoliofile, pricefile, fmt='txt'):
     '''
     Make a stock report given portfolio and price data files.
     '''
@@ -65,7 +69,8 @@ def portfolio_report(portfoliofile, pricefile):
     report = make_report_data(portfolio, prices)
 
     # Print it out
-    print_report(report)
+    formatter = tableformat.create_formatter(fmt)
+    print_report(report, formatter)
     print()
 
 

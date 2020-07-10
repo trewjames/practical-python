@@ -30,8 +30,7 @@ len(c)                    # 3
 
 Sequences can be replicated: `s * n`.
 
-```python
->>> a = 'Hello'
+```python>>> a = 'Hello'
 >>> a * 3
 'HelloHelloHello'
 >>> b = [1, 2, 3]

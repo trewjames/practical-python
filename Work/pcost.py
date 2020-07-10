@@ -9,23 +9,7 @@ def portfolio_cost(fname):
     ''' Returns the cost of a portfolio '''
 
     portfolio = read_portfolio(fname)
-    cost = sum([row['shares'] * row['price'] for row in portfolio])
-
-    # with open(fname, "rt") as f:
-    #     lines = csv.reader(f)
-    #     header = next(lines)
-
-    #     data = [line for line in lines]
-
-    # cost = 0
-    # for index, field in enumerate(data, start=1):
-    #     record = dict(zip(header, field))
-    #     try:
-    #         nshares = int(record['shares'])
-    #         price = float(record['price'])
-    #         cost += nshares * price
-    #     except ValueError:
-    #         print(f"Row {index}: Couldn't convert: {field}")
+    cost = sum([s.shares * s.price for s in portfolio])
     return round(cost, 2)
 
 
