@@ -8,7 +8,7 @@ def integer(name):
     return typedproperty(name, int)
 
 
-def float(name):
+def float_(name):
     return typedproperty(name, (int, float))
 
 

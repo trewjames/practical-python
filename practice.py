@@ -1,55 +1,17 @@
-class Dog:
-    def noise(self):
-        return 'Bark'
-
-    def chase(self):
-        return 'Chasing!'
 
 
-class Bike:
-    def noise(self):
-        print(misty.noise())
-        return 'On your left'
-
-    def pedal(self):
-        return 'Pedaling!'
+def logged(func):
+    def wrapper(*args, **kwargs):
+        print('Calling', func.__name__)
+        return func(*args, **kwargs)
+    return wrapper
 
 
-class Loud:
-    def noise(self):
-        return super().noise().upper()
-        # super() delegates to the next class on the MRO
+@logged
+def sub(x, y):
+    return x - y
 
 
-class LoudDog(Loud, Dog):
-    '''
-    MRO:
-    (<class '__main__.LoudDog'>,
-    <class '__main__.Loud'>,
-    <class '__main__.Dog'>,
-    <class 'object'>)
-    '''
-    pass
-
-
-class LoudBike(Loud, Bike):
-    pass
-
-
-misty = Dog()
-chari = Bike()
-print(chari.noise())
-# yapper = LoudDog()
-# print(yapper.noise())
-# print(LoudDog.__mro__)
-# print(Loud.__dict__)
-
-
-'''
-for cls in LoudDog.__mro__:
-    if 'noise' in cls.__dict__:
-        if super():
-            continue
-        else:
-            break
-'''
+print(sub(4, 2))
+print(4, '4')
+repr((4, '4'))
