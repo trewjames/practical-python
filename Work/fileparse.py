@@ -32,8 +32,7 @@ def parse_csv(lines, select=None, types=None, has_headers=True,
                 row = [func(val) for func, val in zip(types, row)]
             except ValueError as err:
                 if not silence_errors:
-                    print(f"Conversion error. Reason {err}")
-                    print(f"Row {rowNum}: {row}")
+                    print(f"Row {rowNum}: {row} - Conversion error. Reason {err}")
                 continue
 
         if has_headers:

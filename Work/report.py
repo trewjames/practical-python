@@ -8,7 +8,7 @@ import stock
 from portfolio import Portfolio
 
 
-def read_portfolio(filename):
+def read_portfolio(filename, **opts):
     '''
     Read a stock portfolio file with parse_csv.
     Each line item converted into a Stock obj.
@@ -16,9 +16,11 @@ def read_portfolio(filename):
     '''
     select = ['name', 'shares', 'price']
     types = [str, int, float]
+
     with open(filename) as lines:
-        dictlist = parse_csv(lines, select=select, types=types)
-    return Portfolio([stock.Stock(d['name'], d['shares'], d['price']) for d in dictlist])
+        dictlist = parse_csv(lines, select=select, types=types, **opts)
+
+    return Portfolio([stock.Stock(**d) for d in dictlist])
 
 
 def read_prices(filename):
