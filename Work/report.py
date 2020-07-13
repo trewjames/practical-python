@@ -5,18 +5,20 @@
 from fileparse import parse_csv
 import tableformat
 import stock
+from portfolio import Portfolio
 
 
 def read_portfolio(filename):
     '''
-    Read a stock portfolio file into a list of dictionaries with keys
-    name, shares, and price.
+    Read a stock portfolio file with parse_csv.
+    Each line item converted into a Stock obj.
+    Portfolio is a iterable collection of Stock objs = self._holdings
     '''
     select = ['name', 'shares', 'price']
     types = [str, int, float]
     with open(filename) as lines:
         dictlist = parse_csv(lines, select=select, types=types)
-    return [stock.Stock(d['name'], d['shares'], d['price']) for d in dictlist]
+    return Portfolio([stock.Stock(d['name'], d['shares'], d['price']) for d in dictlist])
 
 
 def read_prices(filename):
@@ -83,3 +85,6 @@ def main(args):
 if __name__ == "__main__":
     import sys
     main(sys.argv)
+
+
+# portfolio_report('Data/portfolio.csv', 'Data/prices.csv')

@@ -9,8 +9,7 @@ def portfolio_cost(fname):
     ''' Returns the cost of a portfolio '''
 
     portfolio = read_portfolio(fname)
-    cost = sum([s.cost for s in portfolio])
-    return round(cost, 2)
+    return portfolio.total_cost
 
 
 def main(args):

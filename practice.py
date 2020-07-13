@@ -8,6 +8,7 @@ class Dog:
 
 class Bike:
     def noise(self):
+        print(misty.noise())
         return 'On your left'
 
     def pedal(self):
@@ -37,10 +38,11 @@ class LoudBike(Loud, Bike):
 
 misty = Dog()
 chari = Bike()
-yapper = LoudDog()
-print(yapper.noise())
-print(LoudDog.__mro__)
-print(Loud.__dict__)
+print(chari.noise())
+# yapper = LoudDog()
+# print(yapper.noise())
+# print(LoudDog.__mro__)
+# print(Loud.__dict__)
 
 
 '''
